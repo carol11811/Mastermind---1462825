@@ -33,6 +33,8 @@ public class VInfoJuego {
 	int dim;
 	String[] arrayNull = {"null","null","null","null","null","null","null"};
 	String[] Ganador = {"null","null","null","null","null","null","null"};
+	String[][] Usuario;
+	String[][] Resultado;
 	int intentos = 0;
 	String[] colores = {"Rj", "Az", "Rs" ,"Ne" ,"Bl" ,"Ve" ,"Na" ,"Am" ,"Vi"};
 	private JFrame frmMastermind;
@@ -62,6 +64,15 @@ public class VInfoJuego {
 		initialize();
 	}
 
+	public int actualizarDatos()
+	{
+		int result = controlador.obtenerIntentos();
+		Ganador = controlador.obtenerGanador();
+		Usuario = controlador.obtenerJugadasUsuario();
+		Resultado = controlador.obtenerResultados();
+		return result;
+	}
+	
 	public int validarDimension(int dimension)
 	{
 		int result;
@@ -280,7 +291,7 @@ public class VInfoJuego {
 				
 				if(dim > 2)
 				{
-					intentos++;
+					intentos = actualizarDatos();
 					usuario = addRespuestaUsuario(c1, c2, c3, c4, c5, c6, c7);
 					list.setModel(listComprobaciones);
 					result = comprobarResult(usuario);
@@ -291,7 +302,11 @@ public class VInfoJuego {
 						if (result[i] != "Ne") fin = false;
 					}
 					fin = finJuego(result);
-					if (fin == true) JOptionPane.showMessageDialog(null, "Ganaste en " + intentos + " intentos");
+					if (fin == true)
+					{
+						intentos++;
+						JOptionPane.showMessageDialog(null, "Ganaste en " + intentos + " intentos");
+					}
 				}
 			}
 		});
@@ -315,7 +330,7 @@ public class VInfoJuego {
 						p = p + " " + Ganador[i];
 					}
 				}
-				//JOptionPane.showMessageDialog(null, p);
+				JOptionPane.showMessageDialog(null, p);
 				bIniciar.setEnabled(false);
 				spinnerDim.setEnabled(false);
 				bComprobar.setVisible(true);
