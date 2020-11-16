@@ -3,45 +3,120 @@
  */
 package Mastermind.y;
 
-public class CInfoJuego{
-    public boolean someLibraryMethod() {
-        return true;
-    }
+public class CInfoJuego extends VInfoJuego{
     
+    MInfoJuego modelo;
+    String[] AuxArray; //array auxiliar
+    String[] cUsuarioUlt; //ultimo array usuario
+	String[][] cUsuario; //matriz jugadas usuario
+	String[] cGanador;
+	String[] cResultadoUlt; //ultimo array resultado
+	String[][] cResultado; //matriz resultados
+	int cDimension; //dimension de los arrays (cantidad de colores por jugada)
+	int cNumJugada=0; //cantidad de jugadas hechas
+	int cIntentos = 100;
+    
+	public CInfoJuego() {}
+	
+	public CInfoJuego(int dimension, String[] arrayGanador)
+	{
+		modelo = new MInfoJuego(dimension);
+		cDimension = dimension;
+		cGanador = new String[dimension];
+		cUsuarioUlt = new String[dimension];
+		cResultadoUlt = new String[dimension];
+		cUsuario = new String[cIntentos][dimension];
+		cResultado = new String[cIntentos][dimension];
+		modelo.setGanador(arrayGanador);
+	}
+
+	public String[] obtenerGanador()
+	{
+		String[] result = modelo.getGanador();
+		return result;
+	}
+	
+	public String[][] obtenerJugadasUsuario()
+	{
+		String[][] result = modelo.getUsuario();
+		return result;
+	}
+
+	public String[][] obtenerResultados()
+	{
+		String[][] result = modelo.getResultado();
+		return result;
+	}
+	
+	public int obtenerIntentos()
+	{
+		int result = modelo.getnumjugada();
+		return result;
+	}
+	
     public String[] comprobaciones(String[] arrayUsuario, String[] arrayGanador)
     {
-    	String[] result = {};
-    	
-    	//IMPLEMENTACIÓN
+    	/*comprobamos cada uno de los colores enviados por el usuario y los comparamos con el array ganador
+    	  Puede haber tres casos:
+    	  1) negra: El color existe y está en la posición que el usuario ha dicho
+    	  2) blanca: El color existe, pero no está en la posición que el usuario ha dicho
+    	  3) hueco: El color no existe dentro del array ganador
+    	*/ 
+    	String[] result = new String[cDimension];
+    	int jug = modelo.getnumjugada();
+    	jug++;
+    	modelo.setnumJugada(jug);
     	for (int i = 0; i < arrayUsuario.length; i++)
     	{
-    		if (arrayUsuario[i] == arrayGanador[i])
+    		if (arrayGanador[i] != "null")
     		{
-    			result[i] = "negra";
+    			if (arrayUsuario[i] == arrayGanador[i])
+        		{
+        			//coincide el color en la posición i
+        			result[i] = "Ne";
+        		}
+        	  	else
+        	  	{
+        	  		if (colorExiste(arrayUsuario[i], arrayGanador))
+        	  			//no sabemos donde, pero el color de la posición i está dentro del array ganador
+        	  			result[i] = "Bl";
+    	  			else
+    	  				//el color de la posición i no está dentro del array ganador
+    	  				result[i] = "-";
+        	  	}
     		}
-    	  	else
-    	  	{
-    	  		if (colorExiste(arrayUsuario[i], arrayGanador))
-    	  			result[i] = "blanca";
-	  			else
-	  				result[i] = "null";
-    	  	}
+    		else
+    		{
+    			if(cDimension > i) result[i] = "-";
+    		}
+    		
     	}
-    	String[] expectedResult = {"negra","negra","negra","negra","negra"};
-    	System.out.println("expected: " + expectedResult);
-    	System.out.println("result: " + result);
     	
+    	//actualizar arrays del modelo
+    	modelo.setUsuarioUlt(arrayUsuario);
+    	modelo.setResultadoUlt(result);
     	return result;
     }
     
-    public boolean colorExiste(String color, String[] arrayGanador)
+    protected boolean colorExiste(String color, String[] arrayGanador)
     {
+    	//Miramos si el color de la posición i de nuestra jugada existe dentro del array ganador
     	boolean result = false;
+    	int i = 0;
     	
-    	//IMPLEMENTACIÓN
+    	while((result == false) && (i<arrayGanador.length))
+    	{
+    		//bucle: mientras no encontremos el color dentro del array ganador
+    		//o bien, no hayamos recorrido todo el array ganador
+    		if(arrayGanador[i] == color)
+    		{
+    			//color encontrado dentro del array. Devolvemos true como result
+    			result = true;
+    		}
+    		i++;
+    	}
     	
     	return result;
     }
-    
     
 }
