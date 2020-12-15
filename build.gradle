@@ -27,6 +27,7 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
+<<<<<<< HEAD
 
 task customFatJar(type: Jar) {
 
@@ -43,3 +44,5 @@ task customFatJar(type: Jar) {
     with jar
 
 }
+=======
+>>>>>>> 30cfe10fe9dd0f8bad19ccbd131ff85806e4ef04

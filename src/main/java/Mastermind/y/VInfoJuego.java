@@ -101,8 +101,13 @@ public class VInfoJuego {
 		
         for (int i = 0; i < dim; i++)
         {
+<<<<<<< HEAD
         	//int_random = rand.nextInt(upperbound);
         	result[i] = colores[i];
+=======
+        	int_random = rand.nextInt(upperbound);
+        	result[i] = colores[int_random];
+>>>>>>> 30cfe10fe9dd0f8bad19ccbd131ff85806e4ef04
         }
 		return result;
 	}
